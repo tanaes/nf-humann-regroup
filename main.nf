@@ -138,7 +138,7 @@ process download_cmd_tables {
   study = task.ext.study ?: "${study}"
   """
   >&2 R --version 
-
+  mkdir -p ${params.hub_cache_path}
   export EXPERIMENT_HUB_CACHE='${params.hub_cache_path}'
   >&2 echo "exported"
   download_cmd.R ${study}
