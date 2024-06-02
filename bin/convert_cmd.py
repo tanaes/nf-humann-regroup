@@ -19,7 +19,7 @@ with open(obs_fp, 'r') as f:
 
 mtx = sp.io.mmread(mtx_fp)
 
-tab = Table(mtx, rows, cols)
+tab = Table(mtx, obs, ids)
 
 with biom_open(out_fp, 'w') as f:
     tab.to_hdf5(f, 'CuratedMetagenomicData')
