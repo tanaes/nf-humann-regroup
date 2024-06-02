@@ -188,7 +188,7 @@ process regroup_humann_tables {
   group = task.ext.group ?: "${group}"
   """
   humann_config --update database_folders utility_mapping ${params.utility_db}
-
+  humann_config
   humann_regroup_table \
     -i ${gf_biom} \
     -g ${group} \
