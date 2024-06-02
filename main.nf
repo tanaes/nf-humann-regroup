@@ -144,7 +144,7 @@ process download_cmd_tables {
   val(study)
 
   output:
-  tuple val(study), path('*_genefamilies.biom'), emit: gf_biom
+  tuple val(study), path('*.biom'), emit: gf_biom
 
   script:
   study = task.ext.study ?: "${study}"
@@ -152,7 +152,7 @@ process download_cmd_tables {
   export EXPERIMENT_HUB_CACHE='${params.hub_cache_path}'
   download_cmd.R ${study}
 
-  convert_cmd.py data.mtx rows.txt cols.txt ${study}_genefamilies.biom
+  convert_cmd.py data.mtx rows.txt cols.txt ${study}.biom
   """
 
   stub:
