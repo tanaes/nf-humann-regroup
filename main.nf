@@ -149,7 +149,10 @@ process download_cmd_tables {
   script:
   study = task.ext.study ?: "${study}"
   """
+  >&2 R --version 
+
   export EXPERIMENT_HUB_CACHE='${params.hub_cache_path}'
+  >&2 echo "exported"
   download_cmd.R ${study}
 
   convert_cmd.py data.mtx rows.txt cols.txt ${study}.biom
