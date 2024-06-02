@@ -172,7 +172,7 @@ process regroup_humann_tables {
   label "bigmem"
   // conda "/home/jonsan/miniforge3/envs/humann"
   container params.docker_container_humann3
-  containerOptions '--volume ${params.utility_db}:${params.utility_db}'
+  containerOptions "--volume ${params.utility_db}:${params.utility_db}"
 
   publishDir {"${params.outdir}/${group}" }, mode: 'copy', pattern: "*.{biom}"
   
