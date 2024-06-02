@@ -3,7 +3,7 @@
 import sys
 import scipy as sp
 from biom import Table
-from biom.utils import biom_open
+from biom.util import biom_open
 
 args = sys.argv
 mtx_fp = args[1]
