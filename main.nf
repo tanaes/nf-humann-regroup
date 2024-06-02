@@ -167,7 +167,7 @@ process download_cmd_tables {
 
 
 process regroup_humann_tables {
-  tag "$study"
+  tag "$study_$group"
   label "bigmem"
   conda "/home/jonsan/miniforge3/envs/humann"
 
@@ -203,7 +203,7 @@ process regroup_humann_tables {
 
 
 process split_humann_tables {
-  tag "$study"
+  tag "$study_$group"
   label "medmem"
   conda "/home/jonsan/miniforge3/envs/humann"
 
