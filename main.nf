@@ -85,11 +85,7 @@ summary['Split stratified'] = params.split
 
 //Folders
 summary['Folders'] = ""
-summary['Output dir'] = workingpath
-summary['Working dir'] = workflow.workDir
 summary['Output dir'] = params.outdir
-summary['Script dir'] = workflow.projectDir
-summary['Lunching dir'] = workflow.launchDir
 
 log.info summary.collect { k,v -> "${k.padRight(27)}: $v" }.join("\n")
 log.info ""
