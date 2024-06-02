@@ -42,15 +42,6 @@ if (params.help) {
 }
 
 
-//Creates working dir
-workingpath = params.outdir + "/" + params.project
-workingdir = file(workingpath)
-if( !workingdir.exists() ) {
-  if( !workingdir.mkdirs() )  {
-    exit 1, "Cannot create working directory: $workingpath"
-  }
-}
-
 
 // Header log info
 log.info """---------------------------------------------
