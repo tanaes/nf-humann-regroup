@@ -135,7 +135,7 @@ ${summary.collect { k,v -> "            <dt>$k</dt><dd>$v</dd>" }.join("\n")}
 
 process download_cmd_tables {
   tag "$study"
-
+  label "medmem"
   container params.docker_container_cmd
 
   publishDir {"${params.outdir}/" }, mode: 'copy', pattern: "*.{biom}"
@@ -165,7 +165,7 @@ process download_cmd_tables {
 
 process regroup_humann_tables {
   tag "$study"
-
+  label "bigmem"
   container params.docker_container_humann3
 
   publishDir {"${params.outdir}/${group}" }, mode: 'copy', pattern: "*.{biom}"
@@ -201,7 +201,7 @@ process regroup_humann_tables {
 
 process split_humann_tables {
   tag "$study"
-
+  label "medmem"
   container params.docker_container_humann3
 
   publishDir {"${params.outdir}/${group}/split" }, mode: 'copy', pattern: "*.{biom}"
