@@ -1,6 +1,9 @@
 #!/usr/bin/env Rscript
 args = commandArgs(trailingOnly=TRUE)
 
+library(curatedMetagenomicData)
+library(Matrix)
+
 if (length(args) != 1) {
   stop("Exactly one argument must be supplied (CMD study)", call.=FALSE)
 } else {
