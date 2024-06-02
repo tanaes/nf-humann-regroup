@@ -189,6 +189,7 @@ process regroup_humann_tables {
   """
   humann_config --update database_folders utility_mapping ${params.utility_db}
   humann_config
+  ls -l ${params.utility_db}
   humann_regroup_table \
     -i ${gf_biom} \
     -g ${group} \
@@ -210,7 +211,7 @@ process split_humann_tables {
   label "medmem"
   // conda "/home/jonsan/miniforge3/envs/humann"
   container params.docker_container_humann3
-  
+
   publishDir {"${params.outdir}/${group}/split" }, mode: 'copy', pattern: "*.{biom}"
   
   input:
