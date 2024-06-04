@@ -56,7 +56,7 @@ def join_biom_files(input_files):
 
     return(joined_biom)
 
-def parition_table(biom_fp, max_s)
+def parition_table(biom_fp, max_s):
     print('Loading input file')
     biom_orig = load_table(biom_fp)
 
@@ -94,7 +94,7 @@ def main():
 
     split_fps = parition_table(biom_fp, max_s)
     regrouped_fps = []
-    
+
     for temp_name in split_fps:
         proc_name = '_regrouped.'.join(temp_name.split('.'))
         regrouped_fps.append(proc_name)
