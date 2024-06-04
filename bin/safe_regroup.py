@@ -5,6 +5,7 @@ import subprocess
 import numpy as np
 from biom import Table, load_table
 from biom.util import biom_open
+from scipy.cluster.hierarchy import linkage, leaves_list, dendrogram
 
 def execute_humann_regroup_table(gf_biom, group, output_file):
     """
@@ -35,8 +36,9 @@ def execute_humann_regroup_table(gf_biom, group, output_file):
 
 def split_biom(original, max_samples=100):
     samples = original.ids(axis='sample')
+    ordered_samples = samples[cluster_and_order_columns_by_similarity_sparse(original.matrix_data)]
 
-    f = lambda id_, _: int(np.floor(list(samples).index(id_) / max_samples))
+    f = lambda id_, _: int(np.floor(list(ordered_samples).index(id_) / max_samples))
 
     splits = original.partition(f)
 
@@ -55,6 +57,27 @@ def join_biom_files(input_files):
     joined_biom = base.concat(split_bioms)
 
     return(joined_biom)
+
+
+def cluster_and_order_columns_by_similarity_sparse(sparse_matrix):
+    # Convert the sparse matrix to a binary matrix (presence/absence)
+    binary_matrix = sparse_matrix.copy()
+    binary_matrix.data = np.ones_like(binary_matrix.data)
+    
+    # Transpose the binary matrix to cluster columns
+    binary_matrix_T = binary_matrix.transpose()
+    
+    # Convert the transposed binary matrix to a dense matrix for clustering
+    binary_matrix_T_dense = binary_matrix_T.toarray()
+    
+    # Perform hierarchical/agglomerative clustering
+    Z = linkage(binary_matrix_T_dense, method='ward')
+    
+    # Get the ordered list of columns
+    ordered_columns = leaves_list(Z)
+    
+    return(ordered_columns)
+
 
 def parition_table(biom_fp, max_s):
     print('Loading input file')
