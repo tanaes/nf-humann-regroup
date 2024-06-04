@@ -82,10 +82,11 @@ def main():
         i = i + 1
         temp_name = 'split_%s.biom' % i
         proc_name = 'split_{0}_{1}.biom'.format(i, group)
-        print('Regrouping split %s' % i)
-        with open(temp_name, 'w') as f:
-            f.write(t.to_json('splits'))
+        print('Saving split %s' % i)
+        with biom_open(temp_name, 'w') as f:
+            f.to_hdf5(f, 'split %s' % i)
         split_fps.append(proc_name)
+        print('Regrouping split %s' % i)
         execute_humann_regroup_table(temp_name,
                                      group,
                                      proc_name)
