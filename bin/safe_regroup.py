@@ -33,7 +33,7 @@ def execute_humann_regroup_table(gf_biom, group, output_file):
 
 
 def split_biom(original, max_samples=100):
-    samples = biom.ids(axis='sample')
+    samples = original.ids(axis='sample')
 
     f = lambda id_, _: int(np.floor(list(samples).index(id_) / max_samples))
 
@@ -70,6 +70,7 @@ def main():
 
     biom_orig = load_table(biom_fp)
 
+    print('Partitioning input file')
     biom_splits = split_biom(biom_orig, max_s)
 
     split_fps = []
@@ -79,6 +80,7 @@ def main():
         i = i + 1
         temp_name = 'split_%s.biom' % i
         proc_name = 'split_{0}_{1}.biom'.format(i, group)
+        print('Regrouping split %s' % i)
         with open(temp_name, 'w') as f:
             f.write(t.to_json('splits'))
         split_fps.append(proc_name)
@@ -86,8 +88,10 @@ def main():
                                      group,
                                      proc_name)
 
+    print('Joining split processed tables')
     joined = join_biom_files(split_fps)
 
+    print('Saving joined table')
     with biom_open(output_fp, 'w') as f:
         tab.to_hdf5(f, 'CuratedMetagenomicData') 
 
