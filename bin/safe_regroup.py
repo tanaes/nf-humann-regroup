@@ -56,6 +56,28 @@ def join_biom_files(input_files):
 
     return(joined_biom)
 
+def parition_table(biom_fp, max_s)
+    print('Loading input file')
+    biom_orig = load_table(biom_fp)
+
+    print('Partitioning input file')
+    biom_splits = split_biom(biom_orig, max_s)
+
+    split_fps = []
+
+    i = 0
+    for b, t in biom_splits:
+        i = i + 1
+        temp_name = 'split_%s.biom' % i
+        proc_name = 'split_%s_regrouped.biom' % i
+        print('Saving split %s' % i)
+        with biom_open(temp_name, 'w') as f:
+            t.to_hdf5(f, 'split %s' % i)
+        split_fps.append(temp_name)
+
+    return(split_fps)
+
+
 def main():
     args = sys.argv
 
@@ -69,34 +91,24 @@ def main():
     else:
         raise ValueError('Must have three or four arguments')
 
-    print('Loading input file')
-    biom_orig = load_table(biom_fp)
 
-    print('Partitioning input file')
-    biom_splits = split_biom(biom_orig, max_s)
-
-    split_fps = []
-
-    i = 0
-    for b, t in biom_splits:
-        i = i + 1
-        temp_name = 'split_%s.biom' % i
-        proc_name = 'split_{0}_{1}.biom'.format(i, group)
-        print('Saving split %s' % i)
-        with biom_open(temp_name, 'w') as f:
-            t.to_hdf5(f, 'split %s' % i)
-        split_fps.append(proc_name)
+    split_fps = parition_table(biom_fp, max_s)
+    regrouped_fps = []
+    
+    for temp_name in split_fps:
+        proc_name = '_regrouped.'.join(temp_name.split('.'))
+        regrouped_fps.append(proc_name)
         print('Regrouping split %s' % i)
         execute_humann_regroup_table(temp_name,
                                      group,
                                      proc_name)
 
     print('Joining split processed tables')
-    joined = join_biom_files(split_fps)
+    joined = join_biom_files(regrouped_fps)
 
     print('Saving joined table')
     with biom_open(output_fp, 'w') as f:
-        tab.to_hdf5(f, 'CuratedMetagenomicData') 
+        joined.to_hdf5(f, 'CuratedMetagenomicData') 
 
 
 
