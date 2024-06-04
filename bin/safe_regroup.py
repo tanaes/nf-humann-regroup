@@ -82,7 +82,7 @@ def cluster_and_order_columns_by_similarity_sparse(sparse_matrix):
 def parition_table(biom_fp, max_s):
     print('Loading input file')
     biom_orig = load_table(biom_fp)
-    print('Original: {0} samples x {1} observations'.format(biom_orig.shape[0],[1]))
+    print('Original: {0} samples x {1} observations'.format(biom_orig.shape[0],biom_orig.shape[1]))
 
     print('Partitioning input file')
     biom_splits = split_biom(biom_orig, max_s)
@@ -95,7 +95,7 @@ def parition_table(biom_fp, max_s):
         temp_name = 'split_%s.biom' % i
         proc_name = 'split_%s_regrouped.biom' % i
         print('Saving split %s' % i)
-        print('Split: {0} samples x {1} observations'.format(biom_orig.shape[0],[1]))
+        print('Split: {0} samples x {1} observations'.format(biom_orig.shape[0],biom_orig.shape[1]))
 
 
         t.remove_empty(axis='observation', inplace=True)
