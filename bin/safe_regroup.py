@@ -94,8 +94,9 @@ def main():
 
     split_fps = parition_table(biom_fp, max_s)
     regrouped_fps = []
-
+    i = 0
     for temp_name in split_fps:
+        i = i + 1
         proc_name = '_regrouped.'.join(temp_name.split('.'))
         regrouped_fps.append(proc_name)
         print('Regrouping split %s' % i)
