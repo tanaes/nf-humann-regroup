@@ -2,6 +2,7 @@
 
 import sys
 import subprocess
+import numpy as np
 from biom import Table, load_table
 from biom.util import biom_open
 
@@ -68,6 +69,7 @@ def main():
     else:
         raise ValueError('Must have three or four arguments')
 
+    print('Loading input file')
     biom_orig = load_table(biom_fp)
 
     print('Partitioning input file')
