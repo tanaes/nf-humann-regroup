@@ -3,6 +3,8 @@
 import sys
 import subprocess
 import numpy as np
+from tempfile import TemporaryDirectory
+from os.path import join
 from biom import Table, load_table
 from biom.util import biom_open
 from scipy.cluster.hierarchy import linkage, leaves_list, dendrogram
@@ -93,7 +95,6 @@ def parition_table(biom_fp, max_s):
     for b, t in biom_splits:
         i = i + 1
         temp_name = 'split_%s.biom' % i
-        proc_name = 'split_%s_regrouped.biom' % i
         print('Saving split %s' % i)
 
         t.remove_empty(axis='observation', inplace=True)
@@ -121,19 +122,22 @@ def main():
 
 
     split_fps = parition_table(biom_fp, max_s)
-    regrouped_fps = []
-    i = 0
-    for temp_name in split_fps:
-        i = i + 1
-        proc_name = '_regrouped.'.join(temp_name.split('.'))
-        regrouped_fps.append(proc_name)
-        print('Regrouping split %s' % i)
-        execute_humann_regroup_table(temp_name,
-                                     group,
-                                     proc_name)
 
-    print('Joining split processed tables')
-    joined = join_biom_files(regrouped_fps)
+    with TemporaryDirectory() as d:
+        td = d.name
+        regrouped_fps = []
+        i = 0
+        for temp_name in split_fps:
+            i = i + 1
+            proc_name = join(td,'_regrouped.'.join(temp_name.split('.')))
+            regrouped_fps.append(proc_name)
+            print('Regrouping split %s' % i)
+            execute_humann_regroup_table(temp_name,
+                                         group,
+                                         proc_name)
+
+        print('Joining split processed tables')
+        joined = join_biom_files(regrouped_fps)
 
     print('Saving joined table')
     with biom_open(output_fp, 'w') as f:
