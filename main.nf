@@ -194,7 +194,7 @@ process regroup_humann_tables {
 
 process split_humann_tables {
   tag "$study_$group"
-  label "medmem"
+  label "bigmem"
   // conda "/home/jonsan/miniforge3/envs/humann"
   container params.docker_container_humann3
 
