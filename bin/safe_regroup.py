@@ -23,7 +23,10 @@ def execute_humann_regroup_table(gf_biom, group, output_file):
     ]
     
     # Execute the command
-    result = subprocess.run(command, capture_output=True, text=True)
+    result = subprocess.run(command, 
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE, 
+                            universal_newlines=True)
     
     # Check if the command was successful
     if result.returncode == 0:
