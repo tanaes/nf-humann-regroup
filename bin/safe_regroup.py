@@ -121,9 +121,11 @@ def main():
         raise ValueError('Must have three or four arguments')
 
 
-    split_fps = parition_table(biom_fp, max_s)
+    
 
     with TemporaryDirectory(dir='./') as td:
+        split_fps = parition_table(biom_fp, max_s)
+        
         regrouped_fps = []
         i = 0
         for temp_name in split_fps:
