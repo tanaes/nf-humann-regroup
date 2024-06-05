@@ -132,7 +132,7 @@ def main():
             i = i + 1
             print(temp_name)
 
-            proc_name = join(td,'_regrouped.'.join(temp_name.split('.')))
+            proc_name = '_regrouped.'.join(temp_name.split('.'))
             print(proc_name)
             regrouped_fps.append(proc_name)
             print('Regrouping split %s' % i)
