@@ -82,6 +82,7 @@ summary['Studies file'] = params.input
 summary['Uniref database'] = params.utility_db
 summary['Output groups'] = params.groups
 summary['Split stratified'] = params.split
+summary['Split size'] = params.split_size
 
 //Folders
 summary['Folders'] = ""
@@ -173,10 +174,12 @@ process regroup_humann_tables {
   study = task.ext.study ?: "${study}"
   group = task.ext.group ?: "${group}"
   """
-  humann_regroup_table \
-    -i ${gf_biom} \
-    -g ${group} \
-    -o ${study}_${group}.biom
+  safe_regroup.py \
+    ${gf_biom} \
+    ${group} \
+    ${study}_${group}.biom \
+    ${params.split_size}
+
   """
 
   stub:
@@ -246,6 +249,10 @@ workflow {
 
   download_cmd_tables(studies)
   gf_bioms = download_cmd_tables.out.gf_biom
+
+  // count samples
+  // split channel to small and large
+  // 
   // gf_bioms.view()
   groups
     .combine(gf_bioms) | regroup_humann_tables | split_humann_tables
