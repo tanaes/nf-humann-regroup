@@ -123,14 +123,17 @@ def main():
 
     
 
-    with TemporaryDirectory(dir='./') as td:
+    with TemporaryDirectory(dir='') as td:
         split_fps = parition_table(biom_fp, max_s, outdir=td)
 
         regrouped_fps = []
         i = 0
         for temp_name in split_fps:
             i = i + 1
+            print(temp_name)
+
             proc_name = join(td,'_regrouped.'.join(temp_name.split('.')))
+            print(proc_name)
             regrouped_fps.append(proc_name)
             print('Regrouping split %s' % i)
             execute_humann_regroup_table(temp_name,
