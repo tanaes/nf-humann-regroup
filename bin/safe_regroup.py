@@ -114,7 +114,7 @@ def main():
     group = args[2]
     output_fp = args[3]
     if len(args) == 5:
-        max_s = args[3]
+        max_s = int(args[3])
     elif len(args) == 4:
         max_s = 100
     else:
